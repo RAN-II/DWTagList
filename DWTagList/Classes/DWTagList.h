@@ -37,8 +37,18 @@
 @property (nonatomic, strong) UIColor *textShadowColor;
 @property (nonatomic, assign) CGSize textShadowOffset;
 
+@property (nonatomic, strong) NSMutableIndexSet *selectedIndexes;
+@property (nonatomic, strong) UIColor *selectedTextColor;
+@property (nonatomic, strong) UIColor *selectedTextShadowColor;
+@property (nonatomic, strong) UIColor *selectedBackgroundColor;
+
+@property (nonatomic, strong) UIColor *highlightedTextColor;
+@property (nonatomic, strong) UIColor *highlightedTextShadowColor;
+
+
 - (void)setTagBackgroundColor:(UIColor *)color;
 - (void)setTagHighlightColor:(UIColor *)color;
+- (void)setTagSelectedColor:(UIColor *)color;
 - (void)setTags:(NSArray *)array;
 - (void)display;
 - (CGSize)fittedSize;
@@ -49,7 +59,7 @@
 @interface DWTagView : UIView
 
 @property (nonatomic, strong) UIButton              *button;
-@property (nonatomic, strong) UILabel               *label;
+//@property (nonatomic, strong) UILabel               *label;
 @property (nonatomic, weak)   id<DWTagViewDelegate> delegate;
 
 - (void)updateWithString:(NSString*)text
@@ -64,6 +74,12 @@
 - (void)setTextColor:(UIColor*)textColor;
 - (void)setTextShadowColor:(UIColor*)textShadowColor;
 - (void)setTextShadowOffset:(CGSize)textShadowOffset;
+
+- (void)setSelectedTextColor:(UIColor*)textColor;
+- (void)setSelectedTextShadowColor:(UIColor*)textShadowColor;
+
+- (void)setHighlightedTextColor:(UIColor *)textColor;
+- (void)setHighlightedTextShadowColor:(UIColor*)textShadowColor;
 
 @end
 

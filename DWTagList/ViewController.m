@@ -50,8 +50,18 @@
 
     // Customisation
     [_tagList setCornerRadius:4.0f];
-    [_tagList setBorderColor:[UIColor lightGrayColor]];
+    [_tagList setBorderColor:[UIColor colorWithRed:.157 green:.784 blue:.706 alpha:1.0]];
     [_tagList setBorderWidth:1.0f];
+    
+    _tagList.textColor = [UIColor colorWithRed:.157 green:.784 blue:.706 alpha:1.0];
+    _tagList.selectedTextColor = [UIColor darkGrayColor];
+    _tagList.selectedTextShadowColor = [UIColor clearColor];
+    _tagList.highlightedTextColor = [UIColor grayColor];
+    _tagList.highlightedTextShadowColor = [UIColor clearColor];
+    
+    [_tagList setTagBackgroundColor:[UIColor clearColor]];
+    _tagList.selectedBackgroundColor = [UIColor colorWithRed:.157 green:.784 blue:.706 alpha:1.0];
+    _tagList.highlightedBackgroundColor = [UIColor colorWithRed:.557 green:.984 blue:.906 alpha:1.0];
 
     [self.view addSubview:_tagList];
 }
