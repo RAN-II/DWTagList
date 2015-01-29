@@ -62,7 +62,7 @@
 //@property (nonatomic, strong) UILabel               *label;
 @property (nonatomic, weak)   id<DWTagViewDelegate> delegate;
 
-- (void)updateWithString:(NSString*)text
+- (void)updateWithString:(id)text
                     font:(UIFont*)font
       constrainedToWidth:(CGFloat)maxWidth
                  padding:(CGSize)padding

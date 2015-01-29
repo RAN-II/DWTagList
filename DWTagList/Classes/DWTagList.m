@@ -140,6 +140,26 @@
     }
 }
 
+- (void)setHorizontalPadding:(CGFloat)horizontalPadding {
+    _horizontalPadding = horizontalPadding;
+    [self display];
+}
+
+- (void)setVerticalPadding:(CGFloat)verticalPadding {
+    _verticalPadding = verticalPadding;
+    [self display];
+}
+
+- (void)setLabelMargin:(CGFloat)labelMargin {
+    _labelMargin = labelMargin;
+    [self display];
+}
+
+- (void)setBottomMargin:(CGFloat)bottomMargin {
+    _bottomMargin = bottomMargin;
+    [self display];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -156,6 +176,8 @@
             }
             
             [tagView.button removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+            tagView.button.selected = NO;
+            tagView.button.backgroundColor = [self getBackgroundColor];
             [tagViews addObject:subview];
         }
         [subview removeFromSuperview];
@@ -175,8 +197,21 @@
             tagView = [[DWTagView alloc] init];
         }
         
+        BOOL isSelected = [self.selectedIndexes containsIndex:tag];
         
-        [tagView updateWithString:text
+        NSString *title = isSelected ? [text stringByAppendingString:@" -"] : [text stringByAppendingString:@" +"];
+        
+        NSMutableAttributedString *attrTitle = [[NSMutableAttributedString alloc] initWithString:title];
+        [attrTitle addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Courier" size:16.0] range:NSMakeRange(attrTitle.length - 1, 1)];
+        if (isSelected) {
+            [attrTitle addAttribute:NSForegroundColorAttributeName value:self.selectedTextColor range:NSMakeRange(0, attrTitle.length)];
+            
+        } else {
+            [attrTitle addAttribute:NSForegroundColorAttributeName value:self.textColor range:NSMakeRange(0, attrTitle.length - 1)];
+            [attrTitle addAttribute:NSForegroundColorAttributeName value:self.borderColor range:NSMakeRange(attrTitle.length - 1, 1)];
+        }
+        
+        [tagView updateWithString:attrTitle
                              font:self.font
                constrainedToWidth:self.frame.size.width - (self.horizontalPadding * 2)
                           padding:CGSizeMake(self.horizontalPadding, self.verticalPadding)
@@ -213,6 +248,8 @@
         
         [tagView setTag:tag];
         [tagView setDelegate:self];
+        
+        tagView.button.selected = [self.selectedIndexes containsIndex:tag];
         
         tag++;
         
@@ -267,13 +304,11 @@
     } else {
         if ([self.selectedIndexes containsIndex:tagView.tag]) {
             [self.selectedIndexes removeIndex:tagView.tag];
-            [button setBackgroundColor:[self getBackgroundColor]];
-            button.selected = NO;
+            [self display];
             
         } else {
             [self.selectedIndexes addIndex:tagView.tag];
-            [button setBackgroundColor:[self getSelectedBackgroundColor]];
-            button.selected = YES;
+            [self display];
         }
     }
 }
@@ -382,7 +417,7 @@
         [_button setTitleShadowColor:TEXT_SHADOW_COLOR forState:UIControlStateHighlighted];
         [_button setTitleShadowColor:TEXT_SHADOW_COLOR forState:UIControlStateSelected];
         _button.titleLabel.shadowOffset = TEXT_SHADOW_OFFSET;
-
+        
         [_button setFrame:self.frame];
         [self addSubview:_button];
         
@@ -401,7 +436,7 @@
     
     if (isTextAttributedString) {
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:text];
-        [attributedString addAttributes:@{NSFontAttributeName: font} range:NSMakeRange(0, ((NSAttributedString *)text).string.length)];
+//        [attributedString addAttributes:@{NSFontAttributeName: font} range:NSMakeRange(0, ((NSAttributedString *)text).string.length)];
         
         textSize = [attributedString boundingRectWithSize:CGSizeMake(maxWidth, 0) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
         [_button setAttributedTitle:[attributedString copy] forState:UIControlStateNormal];
